@@ -58,8 +58,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.sign_in_user);
         Handler signInHandler = new Handler();
 
-
-
         //Initializing Views
         textViewName = (TextView) findViewById(R.id.textViewName);
         textViewEmail = (TextView) findViewById(R.id.textViewEmail);
@@ -121,10 +119,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             textViewName.setText(acct.getDisplayName());
             textViewEmail.setText(acct.getEmail());
 
-
-
-
-
             //Initializing image loader
             imageLoader = CustomVolleyRequest.getInstance(this.getApplicationContext())
                     .getImageLoader();
@@ -141,14 +135,18 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 //            signInHandler.postDelayed(returnToMainActivity,5000);
       //      finish();
 
-
-
-
             Parcelable[] pc = new Parcelable[1];
             pc[0] = acct;
 
+            Intent fromMain = getIntent();
+            Double latitude = fromMain.getDoubleExtra("latitude",0.0);
+            Double longitude = fromMain.getDoubleExtra("longitude",0.0);
+
+
             Intent mainIntent = new Intent(this, MainActivity.class);
             mainIntent.putExtra("login", pc );
+            mainIntent.putExtra("latitude",latitude);
+            mainIntent.putExtra("longitude",longitude);
             startActivity(mainIntent);
 
         } else {

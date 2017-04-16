@@ -26,11 +26,9 @@ public class User {
 
     private Date latestUpdated;
 
+    private String token;
 
-
-
-
-    public User(String name, String email, String contactNumber, Double latitude, Double longitude , Integer expectedTime, Integer radius, Date latestUpdated) {
+    public User(String name, String email, String contactNumber, Double latitude, Double longitude , Integer expectedTime, Integer radius, Date latestUpdated,String token) {
 
         System.out.println("thiii\n\n\n\n\n\n");
         this.name = name;
@@ -41,6 +39,7 @@ public class User {
         this.expectedTime = expectedTime;
         this.radius = radius;
         this.latestUpdated = latestUpdated;
+        this.token=token;
     }
     public User(){
 
