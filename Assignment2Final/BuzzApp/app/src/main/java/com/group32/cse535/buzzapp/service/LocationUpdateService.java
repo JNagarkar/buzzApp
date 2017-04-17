@@ -30,6 +30,10 @@ public class LocationUpdateService extends Service {
     private static final int LOCATION_INTERVAL = 50000;
     private static final float LOCATION_DISTANCE = 0;
 
+    //"http://192.168.1.10:8080"
+ //   private static final String BASE_URL = "http://192.168.0.107:8080";
+    private static final String BASE_URL = "http://192.168.1.10:8080";
+
 
     public class HeartBeat{
         public String id;
@@ -98,11 +102,6 @@ public class LocationUpdateService extends Service {
             new LocationListener(LocationManager.NETWORK_PROVIDER)
     };
 
-
-
-    //"http://192.168.1.10:8080"
-//    private static final String BASE_URL = "http://192.168.0.107:8080";
-    private static final String BASE_URL = "http://192.168.1.10:8080";
     public static int BUZZ_FREQUENCY=5;
 
     @Nullable

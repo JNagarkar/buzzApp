@@ -1,10 +1,13 @@
 package com.group32.cse535.buzzapp.service;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by jaydatta on 4/13/17.
  */
 
-public class Event {
+public class Event implements Parcelable{
     String id;
     String name;
     String imageURL;
@@ -109,4 +112,44 @@ public class Event {
         return true;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeString(eventURL);
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(imageURL);
+        dest.writeString(startDate);
+        dest.writeString(startTime);
+        dest.writeString(venue);
+    }
+
+    public static final Parcelable.Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel source) {
+            return new Event(source);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[0];
+        }
+
+    };
+
+    public Event(Parcel in)
+    {
+        eventURL=in.readString();
+        id = in.readString();
+        name=in.readString();
+        imageURL=in.readString();
+        startDate=in.readString();
+        startTime=in.readString();
+        venue=in.readString();
+    }
 }

@@ -165,9 +165,14 @@ public class MainActivity extends AppCompatActivity implements
                 if(currentLatitude!=0.0 && currentLongitude!=0.0){
 
                     // TODO: find a way to make radius configurable
-                    EventFetcher eventFetcher = new EventFetcher(currentLatitude+"",currentLongitude+"","5",myID);
-                    AsyncTask<String, String, String> eventFetcherTask = new EventFetcherTask(eventFetcher).execute();
-                    System.out.println("Trying to fetch objects");
+
+                    Intent eventIntent = new Intent(MainActivity.this, EventsSelectorActivity.class);
+                    eventIntent.putExtra("latitude",currentLatitude+"");
+                    eventIntent.putExtra("longitude",currentLongitude+"");
+                    eventIntent.putExtra("radius","5");
+                    eventIntent.putExtra("myID",myID+"");
+
+                    startActivity(eventIntent);
                 }
                 else{
                     System.out.println("BOOM");
@@ -187,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
-        // broadcast
+        /*// broadcast
         BroadCast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
     }
 
     private boolean getLocationIntent(Context mainContext) {
@@ -260,8 +265,8 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         //Now lets connect to the API
-
-        mGoogleApiClient.connect();
+       // if(mGoogleApiClient!=null)
+            mGoogleApiClient.connect();
     }
 
     //location
@@ -409,33 +414,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     // broaccast message task
-    public class BroadCastEvent {
-
-        public String userID;
-
-        public String getUserID() {
-            return userID;
-        }
-
-        public void setUserID(String userID) {
-            this.userID = userID;
-        }
-
-        public Event getEvent() {
-            return event;
-        }
-
-        public void setEvent(Event event) {
-            this.event = event;
-        }
-
-        public Event event;
-
-        public BroadCastEvent(String userID, Event event) {
-            this.userID = userID;
-            this.event = event;
-        }
-    }
 
     private class CallAPI extends AsyncTask<String, String, String> {
 

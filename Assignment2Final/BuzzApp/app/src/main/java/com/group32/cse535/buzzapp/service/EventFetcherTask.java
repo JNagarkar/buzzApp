@@ -19,7 +19,7 @@ import java.util.List;
  * Created by jaydatta on 4/15/17.
  */
 
-public class EventFetcherTask extends AsyncTask<String, String, String> {
+public class EventFetcherTask extends AsyncTask<String, String, EventList> {
 
     //"http://192.168.1.10:8080"
 //    private static final String BASE_URL = "http://192.168.0.107:8080";
@@ -38,11 +38,11 @@ public class EventFetcherTask extends AsyncTask<String, String, String> {
 
 
     @Override
-    protected String doInBackground(String... params) {
+    protected EventList doInBackground(String... params) {
 
         String urlStr = BASE_URL+"/crud/events/fetch"; // URL to call
         System.out.println(urlStr);
-
+        EventList eventList=null;
         try
         {
             RestTemplate restTemplate = new RestTemplate();
@@ -51,9 +51,9 @@ public class EventFetcherTask extends AsyncTask<String, String, String> {
             headers.set("Content-type","application-json");
             HttpEntity<String> entity = new HttpEntity<String>("parameters",headers);
             restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
-            EventList eList = restTemplate.postForObject(urlStr,eventFetcher,EventList.class);
+            eventList = restTemplate.postForObject(urlStr,eventFetcher,EventList.class);
 
-            for(Event obj : eList.getEventList()) {
+            for(Event obj : eventList.getEventList()) {
                 //Event  event = (Event) obj;
                 System.out.println(obj.getName());
             }
@@ -61,13 +61,13 @@ public class EventFetcherTask extends AsyncTask<String, String, String> {
         catch(Exception e){
 
             e.printStackTrace();
-            return new String("Exception: " + e.getMessage());
+//            return new String("Exception: " + e.getMessage());
         }
-        return "";
+        return eventList;
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(EventList result) {
         //Update the UI
     }
 
