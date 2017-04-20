@@ -9,19 +9,32 @@ import com.group32.cse535.buzzapp.service.Event;
 public class YesResponseEvent {
 
     String senderID;
+    Event event;
+    String responderID;
+    //Stored the time at which event was broadcasted : absolutely required.
+    Long broadCastTime;
+
+    public Long getBroadCastTime() {
+        return broadCastTime;
+    }
+
+    public void setBroadCastTime(Long broadCastTime) {
+        this.broadCastTime = broadCastTime;
+    }
+
+
 
     public YesResponseEvent(){
 
     }
 
-    public YesResponseEvent(String senderID, Event event, String responderID) {
+    public YesResponseEvent(String senderID, Event event, String responderID,Long broadCastTime) {
         this.senderID = senderID;
         this.event = event;
         this.responderID = responderID;
+        this.broadCastTime = broadCastTime;
     }
 
-    Event event;
-    String responderID;
 
     public String getSenderID() {
         return senderID;

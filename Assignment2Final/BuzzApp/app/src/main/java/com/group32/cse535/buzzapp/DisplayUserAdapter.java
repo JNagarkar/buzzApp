@@ -49,6 +49,6 @@ public class DisplayUserAdapter extends RecyclerView.Adapter<DisplayUserAdapter.
 
     @Override
     public int getItemCount() {
-        return userList.getEventList().size();
+        return userList.getUserList().size();
     }
 }

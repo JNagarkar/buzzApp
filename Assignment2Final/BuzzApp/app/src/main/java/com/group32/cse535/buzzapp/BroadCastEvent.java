@@ -2,6 +2,8 @@ package com.group32.cse535.buzzapp;
 
 import com.group32.cse535.buzzapp.service.Event;
 
+import java.util.Date;
+
 /**
  * Created by jaydatta on 4/17/17.
  */
@@ -28,8 +30,29 @@ public class BroadCastEvent {
 
     public Event event;
 
-    public BroadCastEvent(String userID, Event event) {
+    public Date currentTime;
+
+    public Date getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(Date currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public String personalMessage;
+
+    public String getPersonalMessage() {
+        return personalMessage;
+    }
+
+    public void setPersonalMessage(String personalMessage) {
+        this.personalMessage = personalMessage;
+    }
+
+    public BroadCastEvent(String userID, Event event, Date currentTime) {
         this.userID = userID;
         this.event = event;
+        this.currentTime = currentTime;
     }
 }

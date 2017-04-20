@@ -123,13 +123,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             imageLoader = CustomVolleyRequest.getInstance(this.getApplicationContext())
                     .getImageLoader();
 
-            imageLoader.get(acct.getPhotoUrl().toString(),
+/*            imageLoader.get(acct.getPhotoUrl().toString(),
                     ImageLoader.getImageListener(profilePhoto,
                             R.mipmap.ic_launcher,
                             R.mipmap.ic_launcher));
 
             //Loading image
-            profilePhoto.setImageUrl(acct.getPhotoUrl().toString(), imageLoader);
+            profilePhoto.setImageUrl(acct.getPhotoUrl().toString(), imageLoader);*/
             Toast.makeText(this, "Login success", Toast.LENGTH_LONG).show();
 
 //            signInHandler.postDelayed(returnToMainActivity,5000);

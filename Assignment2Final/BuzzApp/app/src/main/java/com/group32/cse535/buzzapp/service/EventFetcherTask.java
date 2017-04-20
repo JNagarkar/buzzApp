@@ -22,9 +22,8 @@ import java.util.List;
 public class EventFetcherTask extends AsyncTask<String, String, EventList> {
 
     //"http://192.168.1.10:8080"
-//    private static final String BASE_URL = "http://192.168.0.107:8080";
-    private static final String BASE_URL = "http://192.168.1.10:8080";
-
+   // private static final String BASE_URL = "http://192.168.0.110:8080";
+     private static final String BASE_URL = "http://192.168.1.10:8080";
     EventFetcher eventFetcher=null;
     public EventFetcherTask(EventFetcher eventFetcher) {
         //set context variables if required

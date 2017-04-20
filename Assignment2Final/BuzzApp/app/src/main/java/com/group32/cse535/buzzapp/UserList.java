@@ -2,6 +2,7 @@ package com.group32.cse535.buzzapp;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,20 +11,23 @@ import java.util.List;
 
 public class UserList {
 
-    public List<User> getUserList() {
+    public ArrayList<User> getUserList() {
         return userList;
     }
 
-    public void setUserList(List<User> userList) {
+    public void setUserList(ArrayList<User> userList) {
         this.userList = userList;
     }
 
-    List<User> userList;
-
-    public List<User> getEventList() {
-        return userList;
+    public UserList(ArrayList<User> userList) {
+        this.userList = userList;
     }
 
+    public UserList(){
+
+    }
+
+    public ArrayList<User> userList;
 
 
 }

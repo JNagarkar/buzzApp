@@ -41,17 +41,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
 //            view.setOnClickListener(this);
         }
 
-/*
-        @Override
-        public void onClick(View v) {
-
-            System.out.println("clicking over event");
-        }
-
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-        }*/
     }
 
     public EventsAdapter(EventList eventList){

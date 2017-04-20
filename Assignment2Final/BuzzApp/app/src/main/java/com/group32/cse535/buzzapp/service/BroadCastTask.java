@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.group32.cse535.buzzapp.BroadCastEvent;
+import com.group32.cse535.buzzapp.BroadCastMessageResponse;
 import com.group32.cse535.buzzapp.EventRecievedActivity;
 import com.group32.cse535.buzzapp.MainActivity;
 
@@ -17,26 +19,23 @@ import org.springframework.web.client.RestTemplate;
  * Created by jaydatta on 4/13/17.
  */
 
-public class BroadCastTask extends AsyncTask<String, String, String> {
+public class BroadCastTask extends AsyncTask<String, String, BroadCastMessageResponse> {
 
     //"http://192.168.1.10:8080"
-//    private static final String BASE_URL = "http://192.168.0.107:8080";
-    private static final String BASE_URL = "http://192.168.1.10:8080";
-
+   // private static final String BASE_URL = "http://192.168.0.110:8080";
+     private static final String BASE_URL = "http://192.168.1.10:8080";
 
     BroadCastEvent broadCastEvent=null;
     public BroadCastTask(BroadCastEvent broadCastEvent){
         this.broadCastEvent=broadCastEvent;
     }
 
-
-
     @Override
-    protected String doInBackground(String... params) {
+    protected BroadCastMessageResponse doInBackground(String... params) {
         String urlStr = BASE_URL+"/crud/users/broadcast"; // URL to call
         System.out.println(urlStr);
 
-        String result=null;
+        BroadCastMessageResponse response=null;
         try
         {
             RestTemplate restTemplate = new RestTemplate();
@@ -45,25 +44,24 @@ public class BroadCastTask extends AsyncTask<String, String, String> {
             headers.set("Content-type","application-json");
             HttpEntity<String> entity = new HttpEntity<String>("parameters",headers);
             restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
-            result = restTemplate.postForObject(urlStr,broadCastEvent,String.class);
+            response = restTemplate.postForObject(urlStr,broadCastEvent,BroadCastMessageResponse.class);
 
-            System.out.println("BroadCasted "+result);
+            System.out.println("Response for Broadcast:"+response);
         }
         catch(Exception e){
-            return new String("Exception: " + e.getMessage());
+            Log.e("BroadCast-Task","Error:"+e.getMessage());
+            return null;
         }
-        return result;
+        return response;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
     }
 
-
     @Override
-    protected void onPostExecute(final String s) {
+    protected void onPostExecute(final BroadCastMessageResponse s) {
 
     }
 }
