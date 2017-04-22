@@ -18,6 +18,9 @@ import com.group32.cse535.buzzapp.service.EventList;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * Created by jaydatta on 4/16/17.
  */
@@ -26,6 +29,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
 
 
     private EventList eventList;
+
+    private ArrayList<String> imageList = new ArrayList<>();
+
+
     View myView;
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
@@ -45,6 +52,23 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
 
     public EventsAdapter(EventList eventList){
         this.eventList = eventList;
+        setImageList();
+    }
+
+    private void setImageList() {
+
+        imageList.add("https://s3.amazonaws.com/content.ravinia.org/images/2014_LandingPage_Buttons/Tickets/tickets_header.jpg");
+        imageList.add("http://www.deanshu.com/wp-content/uploads/2014/08/Parachute-House-of-Blues-Anaheim.jpg");
+        imageList.add("https://www.callingallgigs.com/wp-content/uploads/2011/11/concert-crowd.jpg");
+        imageList.add("http://www.ks95.com/wp-content/uploads/2014/04/94130125.jpg");
+        imageList.add("https://www.ste-michelle.com/assets/visit_us/faq_btm.jpg");
+        imageList.add("http://www.stranahantheater.org/wp-content/uploads/2016/09/concert.jpg");
+        imageList.add("http://az616578.vo.msecnd.net/files/2016/06/30/636029240982230102667140873_635945327802088955996706849_o-ROCK-CONCERT-facebook.jpg");
+        imageList.add("http://i.ebayimg.com/images/g/5OcAAOSwTuJYo4Jm/s-l1600.jpg");
+        imageList.add("http://az616578.vo.msecnd.net/files/2016/07/30/636054893919341118-840154384_concert-crowd.jpg");
+        imageList.add("http://www.ticketswest.com/media/1028/concert_Featured%20Event%20Tile.jpg");
+        imageList.add("http://az616578.vo.msecnd.net/files/2016/05/09/635983505329496433385654456_concert-audience.jpg");
+
     }
 
 
@@ -64,12 +88,16 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
         holder.startDate.setText(event.getStartDate());
         holder.startTime.setText(event.getStartTime());
 
+        Random rand = new Random();
+
+
         System.out.println(event.getImageURL()+"  image url");
         if(event.getImageURL()!=null){
             AsyncTask<String,Void,Bitmap> downloadTask = new DownloadImageTask(holder).execute(event.getImageURL());
         }
         else{
-            AsyncTask<String,Void,Bitmap> downloadTask = new DownloadImageTask(holder).execute("http://www.adweek.com/wp-content/uploads/files/news_article/justin-beiber-hed2-2013.jpg");
+            int  n = (imageList.size()-1) % (position+1);
+            AsyncTask<String,Void,Bitmap> downloadTask = new DownloadImageTask(holder).execute(imageList.get(n));
         }
     }
 

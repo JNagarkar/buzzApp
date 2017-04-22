@@ -83,6 +83,10 @@ public class EventsSelectorActivity extends Activity {
 
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+
+
+
         recyclerView.addOnItemTouchListener(new EventRecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View child, int childPosition) {
@@ -102,9 +106,9 @@ public class EventsSelectorActivity extends Activity {
                 View promptsView = li.inflate(R.layout.prompts, null);
 
                 alertDialogBuilder.setView(promptsView);
-                final EditText result = (EditText) findViewById(R.id.editTextResult);
 
-                result.setVisibility(View.GONE);
+                final EditText result = (EditText) findViewById(R.id.editTextResult);
+                result.setVisibility(View.INVISIBLE);
                 final EditText userInput = (EditText) promptsView
                         .findViewById(R.id.editTextDialogUserInput);
 
@@ -139,16 +143,9 @@ public class EventsSelectorActivity extends Activity {
                     alertDialog.show();
                 }
 
-
-                if(result.getText().toString()!=null){
-
-                }
-
-
             }
 
-
-            public void doAfterAlert(String id, final Event event1, Date date,String text){
+            public void doAfterAlert(final String id, final Event event1, Date date,String text){
                 BroadCastEvent broadCastEvent = new BroadCastEvent(id,event1,null);
                 broadCastEvent.setPersonalMessage(/*"Hey, I am a fan of "+broadCastEvent.getEvent().getName()*/text);
                 AsyncTask<String, String, BroadCastMessageResponse> postRequest = new BroadCastTask(broadCastEvent).execute("");
@@ -166,11 +163,20 @@ public class EventsSelectorActivity extends Activity {
                             System.out.println("End of time, now polling");
                             Intent displayRespondedUserIntent = new Intent(EventsSelectorActivity.this, DisplayRespondedUsersActivity.class);
                             displayRespondedUserIntent.putExtra("event",event1.getId()+"");
-
+                            displayRespondedUserIntent.putExtra("eventName",event1.getName()+"");
 
                             System.out.println(response.getBroadCastEventCurrentTime()+" this is broadcast time");
 
                             displayRespondedUserIntent.putExtra("broadCastTime",response.getBroadCastEventCurrentTime()+"");
+                            displayRespondedUserIntent.putExtra("secondBroadCastID",id);
+                            displayRespondedUserIntent.putExtra("secondBroadCastEventName",event1.getName());
+                            displayRespondedUserIntent.putExtra("secondBroadCastEventID",event1.getId());
+                            displayRespondedUserIntent.putExtra("secondBroadCastEventURL",event1.getEventURL());
+                            displayRespondedUserIntent.putExtra("secondBroadCastEventImageURL",event1.getImageURL());
+                            displayRespondedUserIntent.putExtra("secondBroadCastEventStartDate",event1.getStartDate());
+                            displayRespondedUserIntent.putExtra("secondBroadCastEventStartTime",event1.getStartTime());
+                            displayRespondedUserIntent.putExtra("secondBroadCastEventVenue",event1.getVenue());
+
                             startActivity(displayRespondedUserIntent);
                         }
                     },Integer.valueOf(response.getExpectedTime())*1000*10);
@@ -181,8 +187,6 @@ public class EventsSelectorActivity extends Activity {
                     e.printStackTrace();
                 }
             }
-
-
         }));
     }
 

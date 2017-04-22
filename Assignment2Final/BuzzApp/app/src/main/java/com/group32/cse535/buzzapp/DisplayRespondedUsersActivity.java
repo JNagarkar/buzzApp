@@ -1,5 +1,6 @@
 package com.group32.cse535.buzzapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +17,9 @@ import android.support.v7.widget.RecyclerView;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Toast;
+
+import com.group32.cse535.buzzapp.service.BroadCastTask;
+import com.group32.cse535.buzzapp.service.Event;
 
 import java.util.concurrent.ExecutionException;
 
@@ -44,10 +50,28 @@ public class DisplayRespondedUsersActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String eventID = intent.getStringExtra("event");
         final String timeEventStarted= intent.getStringExtra("broadCastTime");
+        this.setTitle(intent.getStringExtra("eventName"));
 
         UserFetcher userFetcher = new UserFetcher(senderID,refreshToken,eventID,Long.valueOf(timeEventStarted));
         //This should happen instantly
         AsyncTask<String, String, UserList> userFetchTask = new UserFetcherTask(userFetcher).execute();
+
+
+        String secondBroadCastID = intent.getStringExtra("secondBroadCastID");
+        String secondBroadCastEventName = intent.getStringExtra("secondBroadCastEventName");
+        String secondBroadCastEventID = intent.getStringExtra("secondBroadCastEventID");
+        String secondBroadCastEventURL = intent.getStringExtra("secondBroadCastEventURL");
+        String secondBroadCastEventImageURL = intent.getStringExtra("secondBroadCastEventImageURL");
+        String secondBroadCastEventStartDate = intent.getStringExtra("secondBroadCastEventStartDate");
+        String secondBroadCastEventStartTime = intent.getStringExtra("secondBroadCastEventStartTime");
+        String secondBroadCastEventVenue = intent.getStringExtra("secondBroadCastEventVenue");
+
+
+        boolean secondOver = false;
+        if(intent.hasExtra("secondOver")){
+            secondOver=true;
+        }
+
 
         UserList userList=null;
         try {
@@ -99,7 +123,7 @@ public class DisplayRespondedUsersActivity extends AppCompatActivity {
                     }
                     catch(Exception e){
                         Toast.makeText(getApplicationContext(),
-                                "SMS faild, please try again later!",
+                                "SMS failed, please try again later!",
                                 Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
@@ -126,17 +150,58 @@ public class DisplayRespondedUsersActivity extends AppCompatActivity {
                        /* Toast.makeText(this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
                                 .show();*/
                     }
-
                 }
-
-
-
-
             }));
         }
-        else{
-            Toast.makeText(this,"No one responded",Toast.LENGTH_SHORT).show();
-        }
+        else if(!secondOver){
+            Toast.makeText(this,"No one responded,Lets wait for some more time",Toast.LENGTH_SHORT).show();
+            //Broadcast again, but now with double radius
 
+            final Event event =  new Event();
+            event.setEventURL(secondBroadCastEventURL);
+            event.setVenue(secondBroadCastEventVenue);
+            event.setStartTime(secondBroadCastEventStartTime);
+            event.setImageURL(secondBroadCastEventImageURL);
+            event.setId(secondBroadCastEventID);
+            event.setName(secondBroadCastEventName);
+            event.setStartDate(secondBroadCastEventStartDate);
+
+
+            BroadCastEvent broadCastEvent = new BroadCastEvent(secondBroadCastID,event,null);
+            broadCastEvent.setPersonalMessage("secondTime");
+            AsyncTask<String, String, BroadCastMessageResponse> postRequest = new BroadCastTask(broadCastEvent).execute("");
+
+            try {
+                System.out.println("From broadcast request:"+postRequest.get());
+                while(postRequest.get()==null){
+
+                }
+                final BroadCastMessageResponse response = postRequest.get();
+                System.out.println("waiting for:"+response.getExpectedTime()+" minutes, double time");
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        System.out.println("End of time, now polling");
+                        Intent displayRespondedUserIntent = new Intent(DisplayRespondedUsersActivity.this, DisplayRespondedUsersActivity.class);
+                        displayRespondedUserIntent.putExtra("event",event.getId()+"");
+                        displayRespondedUserIntent.putExtra("eventName",event.getName()+"");
+                        displayRespondedUserIntent.putExtra("broadCastTime",response.getBroadCastEventCurrentTime()+"");
+
+                        System.out.println(response.getBroadCastEventCurrentTime()+" this is broadcast time");
+                        displayRespondedUserIntent.putExtra("secondOver","yes");
+                        startActivity(displayRespondedUserIntent);
+                    }
+                },Integer.valueOf(response.getExpectedTime())*1000*10);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            Toast.makeText(this,"You are not in luck :(",Toast.LENGTH_SHORT).show();
+        }
     }
 }

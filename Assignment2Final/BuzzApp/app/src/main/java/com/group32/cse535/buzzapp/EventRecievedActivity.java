@@ -51,7 +51,7 @@ public class EventRecievedActivity extends AppCompatActivity {
 
       //  registerReceiver(myReceiver, new IntentFilter(MyFireBaseMessagingService.INTENT_FILTER));
 
-        System.out.println("om eventRecievedActivity");
+        System.out.println("on eventRecievedActivity");
 
         eventTextView= (TextView) findViewById(R.id.textViewEvent);
         senderTextView = (TextView)findViewById(R.id.textViewUser);
@@ -95,10 +95,12 @@ public class EventRecievedActivity extends AppCompatActivity {
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
+                    finally {
+                        finish();
+                    }
                 }
             });
         }
-
 
     @Override
     public void onDestroy(){

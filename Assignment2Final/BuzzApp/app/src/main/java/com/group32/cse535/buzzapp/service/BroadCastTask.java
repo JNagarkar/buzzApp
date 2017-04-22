@@ -22,8 +22,8 @@ import org.springframework.web.client.RestTemplate;
 public class BroadCastTask extends AsyncTask<String, String, BroadCastMessageResponse> {
 
     //"http://192.168.1.10:8080"
-   // private static final String BASE_URL = "http://192.168.0.110:8080";
-     private static final String BASE_URL = "http://192.168.1.10:8080";
+    private static final String BASE_URL = "http://192.168.0.110:8080";
+  //   private static final String BASE_URL = "http://192.168.1.10:8080";
 
     BroadCastEvent broadCastEvent=null;
     public BroadCastTask(BroadCastEvent broadCastEvent){

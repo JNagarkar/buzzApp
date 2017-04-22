@@ -44,7 +44,7 @@ public class DisplayUserAdapter extends RecyclerView.Adapter<DisplayUserAdapter.
         holder.userName.setText(currentUser.getName());
         holder.userContact.setText(currentUser.getContactNumber());
         holder.userEmail.setText(currentUser.getEmail());
-        holder.eventName.setText("yet to set");
+        holder.eventName.setText(currentUser.getToken());
     }
 
     @Override

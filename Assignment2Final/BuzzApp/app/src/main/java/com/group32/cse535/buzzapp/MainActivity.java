@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements
     //"http://192.168.1.10:8080"
 //    private static final String BASE_URL = "http://192.168.43.4:8080";
 
-   // private static final String BASE_URL = "http://192.168.0.110:8080";
-    private static final String BASE_URL = "http://192.168.1.10:8080";
+    private static final String BASE_URL = "http://192.168.0.110:8080";
+  //  private static final String BASE_URL = "http://192.168.1.10:8080";
 
     //Define a request code to send to Google Play services
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements
         System.out.println(" token in oncreate:  "+pref2.getString("RefreshToken","-1"));
 
         System.out.println(myID+"    user variable");
-        Toast.makeText(MainActivity.this, myID+" userid", Toast.LENGTH_LONG).show();
+//        Toast.makeText(MainActivity.this, myID+" userid", Toast.LENGTH_LONG).show();
 
         if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION,getApplicationContext(),this) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION,getApplicationContext(),this)) {
             boolean locationSet = getLocation(mainContext);
@@ -155,45 +155,63 @@ public class MainActivity extends AppCompatActivity implements
         name = (EditText) findViewById(R.id.name);
 
         System.out.println(mPhoneNumber);
-        Toast.makeText(MainActivity.this, mPhoneNumber, Toast.LENGTH_LONG).show();
+//        Toast.makeText(MainActivity.this, mPhoneNumber, Toast.LENGTH_LONG).show();
 
         number.setText(mPhoneNumber);
 
         // click login button, go to next activity, return login details to previous activity.
 
-        EventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Fetch nearby events: if user has provided location
-                if(currentLatitude!=0.0 && currentLongitude!=0.0){
+        if(myID=="-1"){
+            EventButton.setVisibility(View.INVISIBLE);
+            LoginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                    // TODO: find a way to make radius configurable
-
-                    Intent eventIntent = new Intent(MainActivity.this, EventsSelectorActivity.class);
-                    eventIntent.putExtra("latitude",currentLatitude+"");
-                    eventIntent.putExtra("longitude",currentLongitude+"");
-                    eventIntent.putExtra("radius","5");
-                    eventIntent.putExtra("myID",myID+"");
-
-                    startActivity(eventIntent);
+                    Intent signInIntent = new Intent(MainActivity.this, SignInActivity.class);
+                    signInIntent.putExtra("latitude", currentLatitude);
+                    signInIntent.putExtra("longitude",currentLongitude);
+                    startActivity(signInIntent);
                 }
-                else{
-                    System.out.println("BOOM");
+            });
 
+        }
+        else{
+            LoginButton.setVisibility(View.INVISIBLE);
+            EventButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Fetch nearby events: if user has provided location
+                    if(currentLatitude!=0.0 && currentLongitude!=0.0){
+
+                        // TODO: find a way to make radius configurable
+
+                        Intent eventIntent = new Intent(MainActivity.this, EventsSelectorActivity.class);
+                        eventIntent.putExtra("latitude",currentLatitude+"");
+                        eventIntent.putExtra("longitude",currentLongitude+"");
+                        eventIntent.putExtra("radius","5");
+                        eventIntent.putExtra("myID",myID+"");
+
+                        startActivity(eventIntent);
+                    }
+                    else{
+                        System.out.println("BOOM");
+
+                    }
                 }
-            }
-        });
+            });
 
-        LoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//            EventButton.performClick();
+  //          EventButton.setPressed(true);
+            EventButton.post(new Runnable(){
+                @Override
+                public void run() {
+                    EventButton.performClick();
+                }
+            });
 
-                Intent signInIntent = new Intent(MainActivity.this, SignInActivity.class);
-                signInIntent.putExtra("latitude", currentLatitude);
-                signInIntent.putExtra("longitude",currentLongitude);
-                startActivity(signInIntent);
-            }
-        });
+        }
+
+
 
         /*// broadcast
         BroadCast.setOnClickListener(new View.OnClickListener() {
@@ -360,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements
             currentLongitude = location.getLongitude();
             Date date = new Date(location.getTime());
             System.out.println(currentLatitude+":"+currentLongitude+"    values");
-            Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
+    //        Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -393,7 +411,7 @@ public class MainActivity extends AppCompatActivity implements
                     RECIEVED_ALL_PERMISSIONS=true;
 
                 } else {
-                    Toast.makeText(getApplicationContext(),"Permission Denied, You cannot access location data.",Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(),"Permission Denied, You cannot access location data.",Toast.LENGTH_LONG).show();
                 }
                 break;
         }

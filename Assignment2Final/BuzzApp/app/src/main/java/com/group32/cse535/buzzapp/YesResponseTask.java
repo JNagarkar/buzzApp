@@ -16,8 +16,8 @@ public class YesResponseTask extends AsyncTask<String, String, String> {
     private static String TAG="YesResponseTask";
 
     //"http://192.168.1.10:8080"
-//    private static final String BASE_URL = "http://192.168.0.110:8080";
-     private static final String BASE_URL = "http://192.168.1.10:8080";
+    private static final String BASE_URL = "http://192.168.0.110:8080";
+//     private static final String BASE_URL = "http://192.168.1.10:8080";
 
 
     YesResponseEvent yesResponseEvent;

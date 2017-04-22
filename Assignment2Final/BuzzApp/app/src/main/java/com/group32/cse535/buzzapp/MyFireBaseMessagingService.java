@@ -163,8 +163,10 @@ public class MyFireBaseMessagingService  extends FirebaseMessagingService {
         stackBuilder.addParentStack(EventRecievedActivity.class);
         stackBuilder.addNextIntent(intent);
 
+        int requestID = (int) System.currentTimeMillis();
+
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this.getApplicationContext(), 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this.getApplicationContext(), requestID/* Request code */, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -186,7 +188,7 @@ public class MyFireBaseMessagingService  extends FirebaseMessagingService {
 
         notificationBuilder.setContentIntent(pendingIntent);
         //    startActivity(intent);
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(requestID /* ID of notification */, notificationBuilder.build());
 
     }
 
@@ -209,9 +211,11 @@ public class MyFireBaseMessagingService  extends FirebaseMessagingService {
         stackBuilder.addParentStack(EventRecievedActivity.class);
         stackBuilder.addNextIntent(intent);
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this.getApplicationContext(), 0 /* Request code */, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_ONE_SHOT);
+        int requestID = (int) System.currentTimeMillis();
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this.getApplicationContext(), requestID /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
 
 
         System.out.println("this:"+this.getApplicationContext());
@@ -235,7 +239,7 @@ public class MyFireBaseMessagingService  extends FirebaseMessagingService {
 
         notificationBuilder.setContentIntent(pendingIntent);
     //    startActivity(intent);
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(requestID /* ID of notification */, notificationBuilder.build());
 
     }
 

@@ -53,8 +53,8 @@ public class MyLoginActivity extends AppCompatActivity implements LoaderManager.
     private static final int REQUEST_READ_CONTACTS = 0;
 
     //"http://192.168.1.10:8080"
-    private static final String BASE_URL = "http://192.168.1.10:8080";
 //    private static final String BASE_URL = "http://192.168.1.10:8080";
+    private static final String BASE_URL = "http://192.168.1.10:8080";
     //Define a request code to send to Google Play services
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private static final int REQUEST_CODE_READ_SMS = 1;
