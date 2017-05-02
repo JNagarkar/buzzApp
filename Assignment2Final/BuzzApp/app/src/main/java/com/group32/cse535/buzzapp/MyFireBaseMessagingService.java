@@ -67,7 +67,7 @@ public class MyFireBaseMessagingService  extends FirebaseMessagingService {
             notificationTitle = hmap.get("notificationTitle");
             personalMessage = hmap.get("personalMessage");
 
-            System.out.println(notificationBody+":"+notificationTitle);
+            Log.v(TAG,notificationBody+":"+notificationTitle);
 
             if (remoteMessage.getData().size() > 0 && errorCondition==false) {
                 Log.d(TAG, "Message data payload: " + remoteMessage.getData());
@@ -77,13 +77,13 @@ public class MyFireBaseMessagingService  extends FirebaseMessagingService {
                 senderID = remoteMessage.getData().get("senderID");
                 if(remoteMessage.getData().containsKey("broadCastTime")){
                     broadCastTime = Long.valueOf(remoteMessage.getData().get("broadCastTime"));
-                    System.out.println(broadCastTime+"  set to");
+                    Log.v(TAG,broadCastTime+"  set to");
 
                 }
-                System.out.println(event.getName()+":"+event.getId()+":"+event.getVenue()+":"+event.getEventURL());
+                Log.v(TAG,event.getName()+":"+event.getId()+":"+event.getVenue()+":"+event.getEventURL());
             }
             else{
-                System.out.println("No payLoad found");
+                Log.v(TAG,"No payLoad found");
             }
 
             // Check if message contains a notification payload.
@@ -123,9 +123,9 @@ public class MyFireBaseMessagingService  extends FirebaseMessagingService {
         JsonParser jsonParser = new JsonParser();
         JsonElement json = jsonParser.parse(str);
 
-        System.out.println(str);*/
+        Log.v(TAG,str);*/
         /*for(Map.Entry<String,String> entry: remoteDataMap.entrySet()){
-            System.out.println(entry.getKey()+":"+entry.getValue());
+            Log.v(TAG,entry.getKey()+":"+entry.getValue());
         }
 */
         String[] values = {"id","name","imageURL","eventURL","startDate","startTime","venue"};
@@ -218,8 +218,8 @@ public class MyFireBaseMessagingService  extends FirebaseMessagingService {
                 PendingIntent.FLAG_ONE_SHOT);
 
 
-        System.out.println("this:"+this.getApplicationContext());
-//        System.out.println(eventContext.getApplicationContext()+":"+eventContext.getApplicationInfo());
+        Log.v(TAG,"this:"+this.getApplicationContext());
+//        Log.v(TAG,eventContext.getApplicationContext()+":"+eventContext.getApplicationInfo());
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)

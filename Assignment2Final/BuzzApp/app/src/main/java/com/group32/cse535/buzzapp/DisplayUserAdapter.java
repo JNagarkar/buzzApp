@@ -14,6 +14,7 @@ public class DisplayUserAdapter extends RecyclerView.Adapter<DisplayUserAdapter.
 
     public UserList userList;
 
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView userName,userContact,userEmail,eventName;
 

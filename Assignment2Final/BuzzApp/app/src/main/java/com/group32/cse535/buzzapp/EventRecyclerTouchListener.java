@@ -2,6 +2,7 @@ package com.group32.cse535.buzzapp;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,8 @@ public class EventRecyclerTouchListener implements RecyclerView.OnTouchListener,
 
     }
 
+    private static final String TAG = "EventRecyclerTouchListener:";
+    
     public EventRecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
 
         this.clickListener = clickListener;
@@ -43,7 +46,6 @@ public class EventRecyclerTouchListener implements RecyclerView.OnTouchListener,
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        System.out.println("touching");
 
         return false;
     }

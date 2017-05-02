@@ -63,6 +63,12 @@ public class MyLoginActivity extends AppCompatActivity implements LoaderManager.
     private double currentLatitude=0.0;
     private double currentLongitude=0.0;
 
+
+
+
+    private static final String TAG = "Login-Activity";
+
+
     private EditText name;
     private EditText number;
     private EditText email;
@@ -120,19 +126,19 @@ public class MyLoginActivity extends AppCompatActivity implements LoaderManager.
                 currentLatitude = i.getDoubleExtra("latitude",0.0);
                 currentLongitude=i.getDoubleExtra("longitude",0.0);
                 // now is the correct time to collect location.
-                System.out.println("in intent:"+currentLatitude+":"+currentLongitude);
+                Log.v(TAG,"in intent:"+currentLatitude+":"+currentLongitude);
 
                 // Creating if user exists
                 AsyncTask<String, String, String> postRequest = new CallAPI().execute("");
                 try {
-                    System.out.println("Recieved:"+postRequest.get());
+                    Log.v(TAG,"Recieved:"+postRequest.get());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
             }else{
-                System.out.println("oooooooooooo");
+                Log.v(TAG,"oooooooooooo");
             }
         }
         else{
@@ -243,11 +249,11 @@ public class MyLoginActivity extends AppCompatActivity implements LoaderManager.
     public User getInputValues(String displayName, String email, String givenName) {
         String userName = displayName;
 
-        System.out.println(mPhoneNumber);
+        Log.v(TAG,mPhoneNumber);
         String phoneNumber = mPhoneNumber;
         String emailId = email;
 
-        System.out.println("Input recieved:"+userName+"  phoneNumber:"+phoneNumber+"  emailId:"+emailID);
+        Log.v(TAG,"Input recieved:"+userName+"  phoneNumber:"+phoneNumber+"  emailId:"+emailID);
 
         if(phoneNumber==null){
             phoneNumber="4804652609";
@@ -264,12 +270,12 @@ public class MyLoginActivity extends AppCompatActivity implements LoaderManager.
         //firebase Token
         String firebaseToken = "RefreshToken";
         SharedPreferences pref2 = getSharedPreferences(firebaseToken,1);
-        System.out.println(" token in user class: "+pref2.getString("RefreshToken","-1"));
+        Log.v(TAG," token in user class: "+pref2.getString("RefreshToken","-1"));
 
 
 
-        System.out.println("currentLatitude:"+currentLatitude+"   longitude:"+currentLongitude);
-        System.out.println("--------"+sdf.format(cal.getTime()));
+        Log.v(TAG,"currentLatitude:"+currentLatitude+"   longitude:"+currentLongitude);
+        Log.v(TAG,"--------"+sdf.format(cal.getTime()));
         return new User(userName, emailId, phoneNumber,currentLatitude,currentLongitude,4,5,null,pref2.getString("RefreshToken","-1"));
     }
 
@@ -281,7 +287,7 @@ public class MyLoginActivity extends AppCompatActivity implements LoaderManager.
     public void onConnected(@Nullable Bundle bundle) {
         final int PERMISSION_REQUEST_CODE_LOCATION = 1;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
+
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -296,13 +302,13 @@ public class MyLoginActivity extends AppCompatActivity implements LoaderManager.
         if (location == null) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) this);
         }
-        System.out.println("location:"+location);
+        Log.v(TAG,"location:"+location);
         if(location!=null) {
             //If everything went fine lets get latitude and longitude
             currentLatitude = location.getLatitude();
             currentLongitude = location.getLongitude();
             Date date = new Date(location.getTime());
-            System.out.println(currentLatitude+":"+currentLongitude+"    values");
+            Log.v(TAG,currentLatitude+":"+currentLongitude+"    values");
             Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
         }
 
@@ -349,7 +355,7 @@ public class MyLoginActivity extends AppCompatActivity implements LoaderManager.
         @Override
         protected String doInBackground(String... params) {
 
-            String urlStr = BASE_URL+"/crud/users/create"; // URL to call
+            String urlStr = MyAppConstants.BASE_URL+"/crud/users/create"; // URL to call
             String result=null;
             try
             {

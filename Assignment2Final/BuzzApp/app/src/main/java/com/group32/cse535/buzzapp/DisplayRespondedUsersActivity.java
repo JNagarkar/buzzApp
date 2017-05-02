@@ -15,6 +15,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,12 +33,13 @@ public class DisplayRespondedUsersActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DisplayUserAdapter userAdapter;
 
+    private static final String TAG = "DisplayRespondedUserActivity:";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activty_display_users);
 
-        //TODO: write userFetcher and userFetcherTask
+
 
         String PREFS_NAME="ID";
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME,0);
@@ -79,7 +81,7 @@ public class DisplayRespondedUsersActivity extends AppCompatActivity {
 
             if(userList.getUserList()!=null){
                 for(User currentUser: userList.getUserList()){
-                    System.out.println(currentUser.getName()+"  responded yes");
+                    Log.v(TAG,currentUser.getName()+"  responded yes");
                 }
 
             }
@@ -113,7 +115,6 @@ public class DisplayRespondedUsersActivity extends AppCompatActivity {
                     User user = finalUserList.getUserList().get(childPosition);
                     Toast.makeText(getApplicationContext(),user.getName()+" send message",Toast.LENGTH_SHORT).show();
 
-                    //TODO: Check if you can send message from here
 
                     try{
                         SmsManager smsManager  = SmsManager.getDefault();
@@ -172,23 +173,23 @@ public class DisplayRespondedUsersActivity extends AppCompatActivity {
             AsyncTask<String, String, BroadCastMessageResponse> postRequest = new BroadCastTask(broadCastEvent).execute("");
 
             try {
-                System.out.println("From broadcast request:"+postRequest.get());
+                Log.v(TAG,"From broadcast request:"+postRequest.get());
                 while(postRequest.get()==null){
 
                 }
                 final BroadCastMessageResponse response = postRequest.get();
-                System.out.println("waiting for:"+response.getExpectedTime()+" minutes, double time");
+                Log.v(TAG,"waiting for:"+response.getExpectedTime()+" minutes, double time");
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
 
-                        System.out.println("End of time, now polling");
+                        Log.v(TAG,"End of time, now polling");
                         Intent displayRespondedUserIntent = new Intent(DisplayRespondedUsersActivity.this, DisplayRespondedUsersActivity.class);
                         displayRespondedUserIntent.putExtra("event",event.getId()+"");
                         displayRespondedUserIntent.putExtra("eventName",event.getName()+"");
                         displayRespondedUserIntent.putExtra("broadCastTime",response.getBroadCastEventCurrentTime()+"");
 
-                        System.out.println(response.getBroadCastEventCurrentTime()+" this is broadcast time");
+                        Log.v(TAG,response.getBroadCastEventCurrentTime()+" this is broadcast time");
                         displayRespondedUserIntent.putExtra("secondOver","yes");
                         startActivity(displayRespondedUserIntent);
                     }

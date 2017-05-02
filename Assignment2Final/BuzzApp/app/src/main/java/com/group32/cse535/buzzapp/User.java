@@ -73,7 +73,6 @@ public class User implements Parcelable{
 
     public User(String name, String email, String contactNumber, Double latitude, Double longitude , Integer expectedTime, Integer radius, Date latestUpdated,String token) {
 
-        System.out.println("thiii\n\n\n\n\n\n");
         this.name = name;
         this.email = email;
         this.latitude = latitude;

@@ -3,6 +3,7 @@ package com.group32.cse535.buzzapp;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.group32.cse535.buzzapp.service.LocationUpdateService;
 
@@ -17,9 +18,10 @@ import org.springframework.web.client.RestTemplate;
 public class HeartBeatTask extends AsyncTask<String, String, String> {
 
     //"http://192.168.1.10:8080"
-    private static final String BASE_URL = "http://192.168.0.110:8080";
-  //   private static final String BASE_URL = "http://192.168.1.10:8080";
+   // private static final String BASE_URL = "http://192.168.0.110:8080";
+     private static final String BASE_URL = "http://192.168.1.10:8080";
 
+    private static final String TAG = "HeartBeat";
 
     LocationUpdateService.HeartBeat heartBeat=null;
     public HeartBeatTask(LocationUpdateService.HeartBeat beat){
@@ -28,8 +30,8 @@ public class HeartBeatTask extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        String urlStr = BASE_URL+"/crud/users/update/location"; // URL to call
-        System.out.println(urlStr);
+        String urlStr = MyAppConstants.BASE_URL+"/crud/users/update/location"; // URL to call
+        Log.v(TAG,urlStr);
 
         String result=null;
         try
@@ -42,7 +44,7 @@ public class HeartBeatTask extends AsyncTask<String, String, String> {
             restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
             result = restTemplate.postForObject(urlStr,heartBeat,String.class);
 
-            System.out.println("expecting: "+result);
+            Log.v(TAG,"expecting: "+result);
 
         }
         catch(Exception e){

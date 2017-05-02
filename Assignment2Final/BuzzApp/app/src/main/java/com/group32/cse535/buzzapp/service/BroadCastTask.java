@@ -10,6 +10,7 @@ import com.group32.cse535.buzzapp.BroadCastEvent;
 import com.group32.cse535.buzzapp.BroadCastMessageResponse;
 import com.group32.cse535.buzzapp.EventRecievedActivity;
 import com.group32.cse535.buzzapp.MainActivity;
+import com.group32.cse535.buzzapp.MyAppConstants;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
@@ -22,18 +23,21 @@ import org.springframework.web.client.RestTemplate;
 public class BroadCastTask extends AsyncTask<String, String, BroadCastMessageResponse> {
 
     //"http://192.168.1.10:8080"
-    private static final String BASE_URL = "http://192.168.0.110:8080";
-  //   private static final String BASE_URL = "http://192.168.1.10:8080";
+//    private static final String BASE_URL = "http://192.168.0.110:8080";
+     private static final String BASE_URL = "http://192.168.1.10:8080";
 
     BroadCastEvent broadCastEvent=null;
     public BroadCastTask(BroadCastEvent broadCastEvent){
         this.broadCastEvent=broadCastEvent;
     }
 
+
+    private static final String TAG = "BroadCastTask:";
+    
     @Override
     protected BroadCastMessageResponse doInBackground(String... params) {
-        String urlStr = BASE_URL+"/crud/users/broadcast"; // URL to call
-        System.out.println(urlStr);
+        String urlStr = MyAppConstants.BASE_URL+"/crud/users/broadcast"; // URL to call
+        Log.v(TAG,urlStr);
 
         BroadCastMessageResponse response=null;
         try
@@ -46,7 +50,7 @@ public class BroadCastTask extends AsyncTask<String, String, BroadCastMessageRes
             restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
             response = restTemplate.postForObject(urlStr,broadCastEvent,BroadCastMessageResponse.class);
 
-            System.out.println("Response for Broadcast:"+response);
+            Log.v(TAG,"Response for Broadcast:"+response);
         }
         catch(Exception e){
             Log.e("BroadCast-Task","Error:"+e.getMessage());

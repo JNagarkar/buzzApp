@@ -18,6 +18,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     EventsAdapter.MyViewHolder holder;
 
+    private static final String TAG = "DownloadImageTask:";
     public DownloadImageTask(EventsAdapter.MyViewHolder holder) {
         this.holder = holder;
     }
@@ -26,7 +27,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     protected Bitmap doInBackground(String... urls) {
         String urldisplay = urls[0];
 
-        System.out.println(urldisplay+" this is url to display");
+        Log.v(TAG,urldisplay+" this is url to display");
         Bitmap mIcon11 = null;
         try {
             InputStream in = new java.net.URL(urldisplay).openStream();

@@ -26,9 +26,8 @@ public class MyFireBaseInstanceIDService extends FirebaseInstanceIdService {
         editor.putString("RefreshToken", refreshedToken);
         editor.commit();
 
-        System.out.println("Stored refresh token into shared preferences");
+        Log.v(TAG,"Stored refresh token into shared preferences");
 
-        // TODO: Implement this method to send any registration to your app's servers.
         sendRegistrationToServer(refreshedToken);
     }
 

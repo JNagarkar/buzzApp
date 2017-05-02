@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements
     //"http://192.168.1.10:8080"
 //    private static final String BASE_URL = "http://192.168.43.4:8080";
 
-    private static final String BASE_URL = "http://192.168.0.110:8080";
-  //  private static final String BASE_URL = "http://192.168.1.10:8080";
+  //  private static final String BASE_URL = "http://192.168.0.110:8080";
+    private static final String BASE_URL = "http://192.168.1.10:8080";
 
     //Define a request code to send to Google Play services
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements
     private double currentLatitude=0.0;
     private double currentLongitude=0.0;
 
+
+    private static final String TAG = "MainActivity";
     private EditText name;
     private EditText number;
     private EditText email;
@@ -99,9 +101,9 @@ public class MainActivity extends AppCompatActivity implements
         //firebase Token
         String firebaseToken = "RefreshToken";
         SharedPreferences pref2 = getSharedPreferences(firebaseToken,1);
-        System.out.println(" token in oncreate:  "+pref2.getString("RefreshToken","-1"));
+        Log.v(TAG," token in oncreate:  "+pref2.getString("RefreshToken","-1"));
 
-        System.out.println(myID+"    user variable");
+        Log.v(TAG,myID+"    user variable");
 //        Toast.makeText(MainActivity.this, myID+" userid", Toast.LENGTH_LONG).show();
 
         if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION,getApplicationContext(),this) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION,getApplicationContext(),this)) {
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
 //        LocationUpdateService applicationLocationManager = new LocationUpdateService(MainActivity.this);
-//        System.out.println(applicationLocationManager.getLatitude()+":::"+applicationLocationManager.getLongitude());
+//        Log.v(TAG,applicationLocationManager.getLatitude()+":::"+applicationLocationManager.getLongitude());
         // Starting periodic location updating service
 
         Intent i = getIntent();
@@ -129,19 +131,19 @@ public class MainActivity extends AppCompatActivity implements
                 currentLatitude = i.getDoubleExtra("latitude",0.0);
                 currentLongitude=i.getDoubleExtra("longitude",0.0);
                 // now is the correct time to collect location.
-                System.out.println("in intent:"+currentLatitude+":"+currentLongitude);
+                Log.v(TAG,"in intent:"+currentLatitude+":"+currentLongitude);
 
                 // Creating if user exists
                 AsyncTask<String, String, String> postRequest = new CallAPI().execute("");
                 try {
-                    System.out.println("Recieved:"+postRequest.get());
+                    Log.v(TAG,"Recieved:"+postRequest.get());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
             }else{
-                System.out.println("oooooooooooo");
+                Log.v(TAG,"oooooooooooo");
             }
         }
 
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements
         number = (EditText) findViewById(R.id.phoneNumber);
         name = (EditText) findViewById(R.id.name);
 
-        System.out.println(mPhoneNumber);
+        Log.v(TAG,mPhoneNumber+"");
 //        Toast.makeText(MainActivity.this, mPhoneNumber, Toast.LENGTH_LONG).show();
 
         number.setText(mPhoneNumber);
@@ -194,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements
                         startActivity(eventIntent);
                     }
                     else{
-                        System.out.println("BOOM");
+                        Log.v(TAG,"BOOM");
 
                     }
                 }
@@ -217,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements
         BroadCast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("press crate");
+                Log.v(TAG,"press crate");
 
                 String PREFS_NAME="ID";
                 SharedPreferences prefs = getSharedPreferences(PREFS_NAME,0);
@@ -225,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 AsyncTask<String, String, String> postRequest = new BroadCastTask(new BroadCastEvent(id,new Event())).execute("");
                 try {
-                    System.out.println("From broadcast request:"+postRequest.get());
+                    Log.v(TAG,"From broadcast request:"+postRequest.get());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -316,11 +318,11 @@ public class MainActivity extends AppCompatActivity implements
     public User getInputValues(String displayName, String email, String givenName) {
         String userName = displayName;
 
-        System.out.println(mPhoneNumber);
+        Log.v(TAG,mPhoneNumber);
         String phoneNumber = mPhoneNumber;
         String emailId = email;
 
-        System.out.println("Input recieved:"+userName+"  phoneNumber:"+phoneNumber+"  emailId:"+emailID);
+        Log.v(TAG,"Input recieved:"+userName+"  phoneNumber:"+phoneNumber+"  emailId:"+emailID);
 
         if(phoneNumber==null){
             phoneNumber="4804652609";
@@ -337,12 +339,12 @@ public class MainActivity extends AppCompatActivity implements
         //firebase Token
         String firebaseToken = "RefreshToken";
         SharedPreferences pref2 = getSharedPreferences(firebaseToken,1);
-        System.out.println(" token in user class: "+pref2.getString("RefreshToken","-1"));
+        Log.v(TAG," token in user class: "+pref2.getString("RefreshToken","-1"));
 
 
 
-        System.out.println("currentLatitude:"+currentLatitude+"   longitude:"+currentLongitude);
-        System.out.println("--------"+sdf.format(cal.getTime()));
+        Log.v(TAG,"currentLatitude:"+currentLatitude+"   longitude:"+currentLongitude);
+        Log.v(TAG,"--------"+sdf.format(cal.getTime()));
         return new User(userName, emailId, phoneNumber,currentLatitude,currentLongitude,4,5,null,pref2.getString("RefreshToken","-1"));
     }
 
@@ -371,13 +373,13 @@ public class MainActivity extends AppCompatActivity implements
         if (location == null) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) this);
         }
-        System.out.println("location:"+location);
+        Log.v(TAG,"location:"+location);
         if(location!=null) {
             //If everything went fine lets get latitude and longitude
             currentLatitude = location.getLatitude();
             currentLongitude = location.getLongitude();
             Date date = new Date(location.getTime());
-            System.out.println(currentLatitude+":"+currentLongitude+"    values");
+            Log.v(TAG,currentLatitude+":"+currentLongitude+"    values");
     //        Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
         }
     }
@@ -451,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         protected String doInBackground(String... params) {
 
-            String urlStr = BASE_URL+"/crud/users/create"; // URL to call
+            String urlStr = MyAppConstants.BASE_URL+"/crud/users/create"; // URL to call
             String result=null;
             try
             {

@@ -4,6 +4,7 @@ package com.group32.cse535.buzzapp;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
 
     private ArrayList<String> imageList = new ArrayList<>();
 
+    private static String TAG="EventsAdaper:";
 
     View myView;
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -91,13 +93,15 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
         Random rand = new Random();
 
 
-        System.out.println(event.getImageURL()+"  image url");
-        if(event.getImageURL()!=null){
-            AsyncTask<String,Void,Bitmap> downloadTask = new DownloadImageTask(holder).execute(event.getImageURL());
-        }
-        else{
-            int  n = (imageList.size()-1) % (position+1);
-            AsyncTask<String,Void,Bitmap> downloadTask = new DownloadImageTask(holder).execute(imageList.get(n));
+        Log.v(TAG,event.getImageURL()+"  image url");
+        if(!event.getName().equals("NotFound")){
+            if(event.getImageURL()!=null){
+                AsyncTask<String,Void,Bitmap> downloadTask = new DownloadImageTask(holder).execute(event.getImageURL());
+            }
+            else{
+                int  n = (imageList.size()-1) % (position+1);
+                AsyncTask<String,Void,Bitmap> downloadTask = new DownloadImageTask(holder).execute(imageList.get(n));
+            }
         }
     }
 

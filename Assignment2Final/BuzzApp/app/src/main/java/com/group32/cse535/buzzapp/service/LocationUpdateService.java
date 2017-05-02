@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -31,8 +32,8 @@ public class LocationUpdateService extends Service {
     private static final float LOCATION_DISTANCE = 0;
 
     //"http://192.168.1.10:8080"
-    private static final String BASE_URL = "http://192.168.0.110:8080";
-   //  private static final String BASE_URL = "http://192.168.1.10:8080";
+//    private static final String BASE_URL = "http://192.168.0.110:8080";
+     private static final String BASE_URL = "http://192.168.1.10:8080";
 
     public class HeartBeat{
         public String id;
@@ -65,9 +66,19 @@ public class LocationUpdateService extends Service {
             Log.e(TAG, "onLocationChanged: " + location+"   time: "+new Date());
             mLastLocation.set(location);
 
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("latitude", location.getLatitude()+"");
+            editor.putString("longitude",location.getLongitude()+"");
+            editor.commit();
+
+
+
+
             AsyncTask<String, String, String> postRequest = new HeartBeatTask(new HeartBeat(getApplicationContext(),location.getLatitude(),location.getLongitude())).execute("");
             try {
-                System.out.println("Recieved:"+postRequest.get());
+                Log.v(TAG,"Recieved:"+postRequest.get());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {

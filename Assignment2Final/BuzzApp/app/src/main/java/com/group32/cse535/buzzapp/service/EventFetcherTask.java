@@ -1,8 +1,11 @@
 package com.group32.cse535.buzzapp.service;
 
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.group32.cse535.buzzapp.EventFetcher;
+import com.group32.cse535.buzzapp.MyAppConstants;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,8 +25,11 @@ import java.util.List;
 public class EventFetcherTask extends AsyncTask<String, String, EventList> {
 
     //"http://192.168.1.10:8080"
-    private static final String BASE_URL = "http://192.168.0.110:8080";
-  //   private static final String BASE_URL = "http://192.168.1.10:8080";
+//    private static final String BASE_URL = "http://192.168.0.110:8080";
+     private static final String BASE_URL = "http://192.168.1.10:8080";
+
+    private static final String TAG = "EventFetcherTask:";
+    
     EventFetcher eventFetcher=null;
     public EventFetcherTask(EventFetcher eventFetcher) {
         //set context variables if required
@@ -39,8 +45,8 @@ public class EventFetcherTask extends AsyncTask<String, String, EventList> {
     @Override
     protected EventList doInBackground(String... params) {
 
-        String urlStr = BASE_URL+"/crud/events/fetch"; // URL to call
-        System.out.println(urlStr);
+        String urlStr = MyAppConstants.BASE_URL+"/crud/events/fetch"; // URL to call
+        Log.v(TAG,urlStr);
         EventList eventList=null;
         try
         {
@@ -52,10 +58,6 @@ public class EventFetcherTask extends AsyncTask<String, String, EventList> {
             restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
             eventList = restTemplate.postForObject(urlStr,eventFetcher,EventList.class);
 
-            for(Event obj : eventList.getEventList()) {
-                //Event  event = (Event) obj;
-                System.out.println(obj.getName());
-            }
         }
         catch(Exception e){
 

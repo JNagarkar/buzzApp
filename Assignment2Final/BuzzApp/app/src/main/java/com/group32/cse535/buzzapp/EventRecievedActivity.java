@@ -24,7 +24,8 @@ public class EventRecievedActivity extends AppCompatActivity {
     TextView senderTextView;
     Button responseButton;
     TextView personalMessageView;
-
+    private static final String TAG = "EventRecievedActivity:";
+    
     public static Context eventRecievedContext;
 
     public static Context getEventRecievedContext() {
@@ -51,7 +52,7 @@ public class EventRecievedActivity extends AppCompatActivity {
 
       //  registerReceiver(myReceiver, new IntentFilter(MyFireBaseMessagingService.INTENT_FILTER));
 
-        System.out.println("on eventRecievedActivity");
+        Log.v(TAG,"on eventRecievedActivity");
 
         eventTextView= (TextView) findViewById(R.id.textViewEvent);
         senderTextView = (TextView)findViewById(R.id.textViewUser);
@@ -65,12 +66,12 @@ public class EventRecievedActivity extends AppCompatActivity {
         User user = (User) intent.getParcelableArrayExtra("parcel")[1];
 
         final String senderID = intent.getStringExtra("senderID");
-        System.out.println("GOT "+senderID);
+        Log.v(TAG,"GOT "+senderID);
         Log.d("EVENTRECIEVED",event.getName()+":"+event.getVenue());
 
         Long broadCastTime=intent.getLongExtra("broadCastTime",0);
 
-        System.out.println("broadcast recieved in EventRecievedActivity:"+broadCastTime);
+        Log.v(TAG,"broadcast recieved in EventRecievedActivity:"+broadCastTime);
 
         String message = intent.getStringExtra("personalMessage");
         eventTextView.setText(event.getName()+":"+event.getVenue()+event.getId());
@@ -88,7 +89,7 @@ public class EventRecievedActivity extends AppCompatActivity {
 
                     AsyncTask<String, String, String> sendYesReponse = new YesResponseTask(new YesResponseEvent(senderID,event,myID,Long.valueOf(finalBroadCastTime))).execute("");
                     try {
-                        System.out.println("From broadcast request:"+sendYesReponse.get());
+                        Log.v(TAG,"From broadcast request:"+sendYesReponse.get());
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
