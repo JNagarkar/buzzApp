@@ -15,7 +15,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.group32.cse535.buzzapp.HeartBeatTask;
+import com.group32.cse535.buzzapp.service.task.HeartBeatTask;
 
 import java.util.Date;
 import java.util.concurrent.ExecutionException;

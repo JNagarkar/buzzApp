@@ -3,10 +3,8 @@ package com.group32.cse535.buzzapp.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.provider.SyncStateContract;
 
-import com.group32.cse535.buzzapp.MainActivity;
+import com.group32.cse535.buzzapp.activities.MainActivity;
 
 /**
  * Created by jaydatta on 3/18/17.
