@@ -5,7 +5,10 @@
 3. Recommend Personalized event suggestions using user search history.
 4. Make the application context aware and dynamically increase radius of event broadcast and waiting time.
 
- [![Project Video](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=USao-F1GXjk&t=175s) 
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=USao-F1GXjk&t=175s
+" target="_blank"><img src="http://img.youtube.com/vi/USao-F1GXjk&t=175s/0.jpg" 
+alt="Project Video" width="240" height="180" border="10" /></a>
 
 ## How to get started:
 
@@ -15,7 +18,7 @@
 ## App Information
 
 ```python
-s = "
+
 
 compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -26,5 +29,5 @@ compileSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner""
-print s
+
 ```
